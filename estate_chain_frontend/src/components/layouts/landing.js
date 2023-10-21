@@ -8,22 +8,15 @@ export const Landing = () => {
 
   return (
     <>
+    <body className='min-h-screen bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400'>
     <Navbar />
-     <div className='grid grid-cols-2 p-10 m-10'>
+    <div className="flex w-4/6 mx-auto justify-center">
 
-     <div className="bg-gray-100 items-center justify-center p-10">
-         <h1 className="text-3xl font-semibold mb-4">Accuwork</h1>
-         <p className="text-gray-600 mb-4">
-         Get properties with the power of Blockchain
-         </p>
-     </div>
- 
-     <div className="bg-gray-100 flex items-center justify-center">
-     <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-xl">
-         
-     </div>
-     </div>
+     <div className="bg-gray-100  items-center justify-center">
+        
+         </div>
  </div>
+ </body>
  </>
   )
 }
