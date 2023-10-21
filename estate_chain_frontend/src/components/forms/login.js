@@ -32,19 +32,23 @@ export const LoginForm = () => {
 
 
   return (
-    <div className="bg-white rounded px-8 pt-6 pb-8 mb-4 max-w-md mx-auto">
+    <>
+    <a onClick={connectWalletHandler} className="text-sm font-semibold leading-6 text-gray-900">
+        
              <button type="button" 
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mt-10"
+                    class="text-white bg-blue-400 hover:bg-gray-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center "
                     onClick={connectWalletHandler}>
                 {connButtonText}
             </button>
-            <div className="accountDisplay">
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+            {/*  <div className="accountDisplay">
               <h3>Address: {defaultAccount}</h3>
             </div>
             <div className="balanceDisplay">
               <h3>Balance: {userBalance}</h3>
-            </div>
+            </div> */}
             {errorMessage}
-    </div>
+    </>
   );
 };
