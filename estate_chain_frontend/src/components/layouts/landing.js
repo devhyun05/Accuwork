@@ -1,9 +1,29 @@
 import { Navbar } from './navbar'
-
+import web3 from 'web3'; // Web3 라이브러리 import
 
 export const Landing = () => {
-  const handleSubmit = () => {
-    
+
+  const handleSubmit = async () => {
+    const accuworkContractAddress = "YOUR_CONTRACT_ADDRESS";
+    // const accuworkContract = new web3.eth.Contract(AccuworkContractAbi, accuworkContractAddress);
+  
+    const accounts = await web3.eth.getAccounts();
+    const userAddress = accounts[0]; // assuming user is connected to MetaMask
+  
+    try {
+      // Submit the request to the smart contract
+      // const result = await accuworkContract.methods.submitRequest().send({ from: userAddress, value: web3.utils.toWei('0.001', 'ether') });
+  
+      // Handle the result if needed
+      // console.log(result);
+  
+      // Optionally, you can show a success message to the user
+      alert("Request submitted successfully!");
+    } catch (error) {
+      // Handle errors, e.g., if the user rejects the transaction
+      console.error(error);
+      alert("Transaction failed or rejected by the user.");
+    }
   };
 
   return (
