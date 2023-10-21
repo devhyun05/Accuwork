@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.711e173c.css",
+    "main.css": "/static/css/main.913b07dc.css",
     "main.js": "/static/js/main.26970390.js",
     "static/media/blockchain-bg.jpg": "/static/media/blockchain-bg.5a65dd6374be9fca57b8.jpg",
     "static/media/metamask.png": "/static/media/metamask.64800ecb7ced19cf1865.png",
@@ -8,11 +8,11 @@
     "static/media/question-mark.png": "/static/media/question-mark.b36077c4fdf5050c19c9.png",
     "static/media/transaction.png": "/static/media/transaction.e839eeb01674d6a9127a.png",
     "index.html": "/index.html",
-    "main.711e173c.css.map": "/static/css/main.711e173c.css.map",
+    "main.913b07dc.css.map": "/static/css/main.913b07dc.css.map",
     "main.26970390.js.map": "/static/js/main.26970390.js.map"
   },
   "entrypoints": [
-    "static/css/main.711e173c.css",
+    "static/css/main.913b07dc.css",
     "static/js/main.26970390.js"
   ]
 }
