@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { SearchBar } from '../searchbar';
 import { Card } from '../card';
@@ -6,8 +6,12 @@ import { Card } from '../card';
 export const Dashboard = () => {
     const {state} = useLocation()
     const data = state
+    const [address, setAddress] = useState(''); 
     const navigate = useNavigate()
-    console.log(data);
+
+    useEffect(()=>{
+        setAddress(data); 
+    }, [])
     const handlelogout = () => {
         navigate("/")
     }
@@ -15,7 +19,8 @@ export const Dashboard = () => {
 
 
     <div>
-            Address: {data.address} 
+
+            Address: {address} 
             <button type="button" 
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mt-10"
                     onClick={handlelogout}>
