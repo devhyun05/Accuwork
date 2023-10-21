@@ -1,69 +1,49 @@
 import React, { useState } from 'react';
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [defaultAccount, setDefaultAccount] = useState(''); 
+  const [userBalance, setUserBalance] = useState(''); 
+  const [connButtonText, setConnButtonText] = useState('Connect Wallet'); 
 
-  const handleLogin = () => {
-    // Handle login logic here
-  };
+    const connectWalletHandler = () => {
+      if (window.ethereum) {
+          window.ethereum.request({method: 'eth_requestAccounts'})
+          .then(result => {
+              accountChangedHandler(result[0])
+          }); 
+      } else {
+          setErrorMessage("Install MetaMask")
+      }
+  }
+
+    const accountChangedHandler = (newAccount) => {
+        setDefaultAccount(newAccount); 
+        getUserBalance(newAccount); 
+    }
+
+    const getUserBalance = (address) => {
+        window.ethereum.request({method: 'eth_getBalance'})
+        .then(balance => {
+          setUserBalance(balance)
+        })
+    };
+
 
   return (
     <div className="bg-white rounded px-8 pt-6 pb-8 mb-4 max-w-md mx-auto">
-      <h2 className="text-2xl font-semibold text-center mb-4">Login</h2>
-
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-
-      <div className="mb-6">
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            className="form-checkbox text-blue-500"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-          />
-          <span className="ml-2 text-sm">Remember Me</span>
-        </label>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          onClick={handleLogin}
-        >
-          Sign In
-        </button>
-        <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-          Forgot Password?
-        </a>
-      </div>
+             <button type="button" 
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mt-10"
+                    onClick={connectWalletHandler}>
+                {connButtonText}
+            </button>
+            <div className="accountDisplay">
+              <h3>Address: {defaultAccount}</h3>
+            </div>
+            <div className="balanceDisplay">
+              <h3>Balance: {userBalance}</h3>
+            </div>
+            {errorMessage}
     </div>
   );
 };
