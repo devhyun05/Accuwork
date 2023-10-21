@@ -14,14 +14,14 @@ export const Landing = () => {
      <div className="bg-gray-100 items-center justify-center p-10">
          <h1 className="text-3xl font-semibold mb-4">Accuwork</h1>
          <p className="text-gray-600 mb-4">
-         Get properties with the power of Blockchain
+         Get the proof of work experience
          </p>
      </div>
  
      <div className="bg-gray-100 flex items-center justify-center">
-     <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-xl">
-         
-     </div>
+      <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-xl">
+       
+      </div>
      </div>
  </div>
  </>
