@@ -15,6 +15,14 @@ import blockchainIcon from '../../images/blockchain-icon.png';
 // @ts-ignore
 import transactionImage from '../../images/transaction.png'; 
 const Welcome = () => {
+    const handleScrollDown = () => {
+        const targetDiv = document.getElementById('targetDiv');
+
+        if (targetDiv) {
+            targetDiv.scrollIntoView({ behavior: 'smooth' }); 
+        }
+    }; 
+
     return (
         <>
             <Navbar/>
@@ -23,12 +31,11 @@ const Welcome = () => {
                     <p style={{fontSize: '36px', fontWeight: 'bold', color: '#675cff', marginBottom: '2%'}}>Verify employment <br/>history for career </p>
                     <div style={{fontSize: '20px'}}>Accuwork is currently testing features <br/> do not use features for public usage yet
                         <br/>
-                        <Link to="/landing">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-lg" style={{width: '230px', fontSize: '20px', marginTop: '4%'}}>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-lg" 
+                                    style={{width: '230px', fontSize: '20px', marginTop: '4%'}}
+                                    onClick={handleScrollDown}>
                                 Get started
                             </button>
-                        </Link>
-
                     </div>
             
                 </div>
@@ -50,9 +57,8 @@ const Welcome = () => {
                 </div>
                 <div style={{ width: '100%', height: '30px', borderBottom: '1px solid #675cff', textAlign: 'center' }}/>
             </div>
-            <div style={{marginTop: '15%', fontSize: '36px', fontWeight: 'bold', color: '#675cff', textAlign: 'center'}}>
+            <div id="targetDiv" style={{marginTop: '15%', fontSize: '36px', fontWeight: 'bold', color: '#675cff', textAlign: 'center'}}>
                 Accuwork Workflow <br/>
-
             </div>
 
             <div style={{display: 'flex', flexDirection: 'column', gap: '75px', width: '50%', margin: '5% auto', marginBottom: '15%', fontSize: '25px', fontWeight: 'bold', color: '#675cff'}}>
@@ -99,7 +105,7 @@ const Welcome = () => {
                 </div>
             </div>
 
-            <div style={{marginBottom: '10%', display: 'flex', flexDirection: 'row', justifyContent: 'center', }}>
+            {/* <div style={{marginBottom: '10%', display: 'flex', flexDirection: 'row', justifyContent: 'center', }}>
                 <div style={{display: 'flex', flexDirection: 'column', marginRight: '10%'}}>
                     <p style={{marginBottom: '5%', fontSize: '36px', fontWeight: 'bold', color: '#675cff'}}>Accuwork Demo</p>
                     <p style={{fontSize: '18px'}}>
@@ -111,7 +117,7 @@ const Welcome = () => {
                 <div>
                     <iframe width="576" height="324" src="https://www.youtube.com/embed/k0OmnkE6f4E?si=44K83UaE2l77yFce" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }
