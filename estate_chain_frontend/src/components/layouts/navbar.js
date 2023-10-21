@@ -66,10 +66,10 @@ export const Navbar = () => {
           <a href="/workexperience" className="text-sm font-semibold leading-6 text-gray-900">
             Work History
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="/share" className="text-sm font-semibold leading-6 text-gray-900">
             Share
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="/search" className="text-sm font-semibold leading-6 text-gray-900">
             Search
           </a>
         </Popover.Group>
@@ -109,13 +109,13 @@ export const Navbar = () => {
                   Work History
                 </a>
                 <a
-                  href="#"
+                  href="/share"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Share
                 </a>
                 <a
-                  href="#"
+                  href="/search"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Search
