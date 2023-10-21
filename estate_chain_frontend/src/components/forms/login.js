@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
+
 export const LoginForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [defaultAccount, setDefaultAccount] = useState(''); 
-  const [userBalance, setUserBalance] = useState(''); 
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [defaultAccount, setDefaultAccount] = useState(null); 
+  const [userBalance, setUserBalance] = useState(null); 
   const [connButtonText, setConnButtonText] = useState('Connect Wallet'); 
 
     const connectWalletHandler = () => {
