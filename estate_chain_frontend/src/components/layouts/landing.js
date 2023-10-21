@@ -14,8 +14,11 @@ export const Landing = () => {
 
         <div className="bg-gray-100 items-center justify-center p-10">
           <h1 className="text-3xl font-semibold mb-4">Accuwork</h1>
-          <p className="text-gray-600 mb-4">
-            Get the proof of work experience
+          <p className=" mb-4">
+            Get the proof of work experience and secure it
+          </p>
+          <p>
+            0.001 ethereum for one request
           </p>
         </div>
 
@@ -48,7 +51,7 @@ export const Landing = () => {
                   <input name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end" />
                 </div>
               </div>
-
+              <input type="hidden"/> 
             </div>
             <div>
               <div class="mt-5 text-right">
