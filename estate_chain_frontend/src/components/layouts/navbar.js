@@ -40,7 +40,7 @@ export const Navbar = () => {
   return (
 
     
-<div className=''>
+
 <header className="bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
@@ -131,5 +131,5 @@ export const Navbar = () => {
           </div>
         </Dialog.Panel>
       </Dialog>
-    </header>  </div>);
+    </header>  );
 };
