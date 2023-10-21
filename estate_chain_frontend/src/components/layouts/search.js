@@ -27,7 +27,7 @@ export const Search = () => {
 
     // filter the items using the apiUsers state
     const filteredItems = apiUsers.filter((user) =>
-      user.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+      user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredUsers(filteredItems);
@@ -63,9 +63,19 @@ export const Search = () => {
               </span>
           </div>
       </div>
-      <ul>
-        {filteredUsers.map(user => <li key={user.id}>{user.firstName}</li>)}
-      </ul>
+      {filteredUsers.map(user => 
+      <div className="mx-auto w-3/4 mt-8 justify-content-left hover:underline  hover:rounded transition duration-500 transform" key={user.id}>
+    <div className="border-l-2 border-gray-500 pl-8">
+        
+            <div className="mb-4 md:mb-0">
+                <h3 className="text-xl font-bold mb-2"><a href='www.google.com' className='text-black'>{user.lastName}</a></h3>
+                <p className="text-gray-600 text-sm"></p>
+            </div>
+        
+    </div>
+</div>
+)}
+
       </div>
     </>
   )
