@@ -10,12 +10,13 @@ export const WorkExperience = () => {
     <>
 
 
-    <Navbar />
-    <body className='min-h-screen bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400 '>
-
-    <div className="w-4/6 mx-auto">
     
-<article className="rounded-xl border bg-white p-4 mx-auto justify-center ">
+    <body className='min-h-screen bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400 '>
+    <Navbar />
+<br></br>
+    <div className="w-4/6 mx-auto">
+    <div className='gap-5'>
+<article className="rounded-xl border bg-white p-4 mx-auto justify-center gap-4">
   <div className="flex items-center gap-4 ">
     <img
       alt="Developer"
@@ -61,6 +62,7 @@ export const WorkExperience = () => {
 
   </ul>
 </article>
+</div>
 </div>
 </body>
 </>
