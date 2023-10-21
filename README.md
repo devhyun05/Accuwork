@@ -1,2 +1,2 @@
-# MarketChain
-Second hand selling website with blockchain
+# EstateChain
+Real Estate website with blockchain
