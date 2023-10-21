@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Dashboard } from '../layouts/dashboard';
 
 
 export const LoginForm = () => {
-  const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null); 
   const [userBalance, setUserBalance] = useState(null); 
@@ -14,10 +11,7 @@ export const LoginForm = () => {
       if (window.ethereum) {
           window.ethereum.request({method: 'eth_requestAccounts'})
           .then(result => {
-                const data = {
-                    address : result[0],
-                }
-                navigate("/dashboard",{state:data})
+              accountChangedHandler(result[0])
           }); 
       } else {
           setErrorMessage("Install MetaMask")
@@ -25,16 +19,16 @@ export const LoginForm = () => {
   }
 
     const accountChangedHandler = (newAccount) => {
-        setDefaultAccount(newAccount.address); 
-        // getUserBalance(); 
- }
+        setDefaultAccount(newAccount); 
+        getUserBalance(newAccount); 
+    }
 
-    // const getUserBalance = () => {
-    //     window.ethereum.request({method: 'eth_getBalance'})
-    //     .then(address => {
-    //       setUserBalance(address)
-    //     })
-    // };
+    const getUserBalance = (address) => {
+        window.ethereum.request({method: 'eth_getBalance'})
+        .then(balance => {
+          setUserBalance(balance)
+        })
+    };
 
 
   return (
@@ -44,13 +38,12 @@ export const LoginForm = () => {
                     onClick={connectWalletHandler}>
                 {connButtonText}
             </button>
-            {/* <div className="accountDisplay">
+            <div className="accountDisplay">
               <h3>Address: {defaultAccount}</h3>
             </div>
             <div className="balanceDisplay">
               <h3>Balance: {userBalance}</h3>
             </div>
-            {errorMessage} */}
             {errorMessage}
     </div>
   );
