@@ -1,19 +1,26 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { SearchBar } from '../searchbar';
 import { Card } from '../card';
 
 export const Dashboard = () => {
     const {state} = useLocation()
     const data = state
+    const navigate = useNavigate()
+
+    const handlelogout = () => {
+        navigate("/")
+    }
   return (
 
 
     <div>
             Address: {data.address} 
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-          logout
-        </span>
+            <button type="button" 
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mt-10"
+                    onClick={handlelogout}>
+                Logout
+            </button>
 
 
     <div className="bg-gray-100 items-center justify-center p-10">
