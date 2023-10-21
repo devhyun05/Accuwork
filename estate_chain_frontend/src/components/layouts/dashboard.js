@@ -12,6 +12,7 @@ export const Dashboard = () => {
     useEffect(()=>{
         setAddress(data); 
     }, [])
+    
     const handlelogout = () => {
         navigate("/")
     }
