@@ -1,3 +1,4 @@
+import { Dashboard } from "./components/layouts/dashboard";
 import { Landing } from "./components/layouts/landing";
 import {
   BrowserRouter as Router,
@@ -10,6 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Landing/>} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         </Routes>
     </Router>
   );

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
+    const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = () => {
     // Handle login logic here
+    navigate('/dashboard');
   };
 
   return (
