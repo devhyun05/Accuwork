@@ -17,7 +17,6 @@ export const LoginForm = () => {
                 const data = {
                     address : result[0],
                 }
-
                 navigate("/dashboard",{state:data})
           }); 
       } else {
@@ -45,12 +44,13 @@ export const LoginForm = () => {
                     onClick={connectWalletHandler}>
                 {connButtonText}
             </button>
-            <div className="accountDisplay">
+            {/* <div className="accountDisplay">
               <h3>Address: {defaultAccount}</h3>
             </div>
-            {/* <div className="balanceDisplay">
+            <div className="balanceDisplay">
               <h3>Balance: {userBalance}</h3>
-            </div> */}
+            </div>
+            {errorMessage} */}
             {errorMessage}
     </div>
   );
