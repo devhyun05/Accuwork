@@ -7,7 +7,7 @@ export const Dashboard = () => {
     const {state} = useLocation()
     const data = state
     const navigate = useNavigate()
-
+    console.log(data);
     const handlelogout = () => {
         navigate("/")
     }
