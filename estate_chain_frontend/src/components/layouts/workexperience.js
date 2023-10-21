@@ -25,8 +25,10 @@ export const WorkExperience = () => {
     />
 
     <div>
-      <h3 className="text-lg font-medium">Claire Mac</h3>
-
+      <div>
+      <span >Claire Mac</span>
+      <button type="button" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 ml-80 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900">Yellow</button>
+      </div>
       <div className="flow-root">
         <ul className="-m-1 flex flex-wrap">
           <li className="p-1 leading-none">
@@ -58,10 +60,11 @@ export const WorkExperience = () => {
           consequuntur deleniti, unde ab ut in!
         </p>
       </a>
-    </li>
-
+    </li>    
   </ul>
+  
 </article>
+
 </div>
 </div>
 </body>
