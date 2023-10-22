@@ -1,30 +1,8 @@
 import { Navbar } from './navbar'
-import web3 from 'web3'; // Web3 라이브러리 import
+
 
 export const Landing = () => {
 
-  const handleSubmit = async () => {
-    const accuworkContractAddress = "YOUR_CONTRACT_ADDRESS";
-    // const accuworkContract = new web3.eth.Contract(AccuworkContractAbi, accuworkContractAddress);
-  
-    const accounts = await web3.eth.getAccounts();
-    const userAddress = accounts[0]; // assuming user is connected to MetaMask
-  
-    try {
-      // Submit the request to the smart contract
-      // const result = await accuworkContract.methods.submitRequest().send({ from: userAddress, value: web3.utils.toWei('0.001', 'ether') });
-  
-      // Handle the result if needed
-      // console.log(result);
-  
-      // Optionally, you can show a success message to the user
-      alert("Request submitted successfully!");
-    } catch (error) {
-      // Handle errors, e.g., if the user rejects the transaction
-      console.error(error);
-      alert("Transaction failed or rejected by the user.");
-    }
-  };
 
   return (
 
@@ -75,7 +53,7 @@ export const Landing = () => {
             </div>
             <div>
               <div class="mt-5 text-right">
-                <button type="button" onClick={handleSubmit} class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                <button type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
               </div>
             </div>
           </div>
