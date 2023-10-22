@@ -26,7 +26,7 @@ const Login = () => {
     }
 
     const getUserBalance = (address) => {
-      window.ethereum.request({ method: 'eth_getBalance', params: [address] })
+      window.ethereum.request({ method: 'eth_getBalance' })
           .then(balance => {
               setUserBalance(balance);
               navigate("/dashboard", {state: address});
