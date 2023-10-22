@@ -12,7 +12,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import {LoginForm} from '../forms/login'
+import LoginForm from '../forms/Login';
 
 const products = [
     { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -32,7 +32,7 @@ const products = [
 
 
 
-export const Navbar = () => {
+const Navbar = () => {
     const {state} = useLocation()
     const data = state
     const navigate = useNavigate()
@@ -133,3 +133,5 @@ export const Navbar = () => {
       </Dialog>
     </header>  );
 };
+
+export default Navbar; 

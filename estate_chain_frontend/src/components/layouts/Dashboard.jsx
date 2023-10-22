@@ -3,7 +3,7 @@ import { useLocation,useNavigate } from 'react-router-dom';
 import { SearchBar } from '../searchbar';
 import { Card } from '../card';
 
-export const Dashboard = () => {
+const Dashboard = () => {
     const {state} = useLocation()
     const data = state
     const [address, setAddress] = useState(''); 
@@ -42,3 +42,4 @@ export const Dashboard = () => {
   );
 };
 
+export default Dashboard; 

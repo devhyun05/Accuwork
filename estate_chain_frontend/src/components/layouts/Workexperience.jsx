@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
-import { Navbar } from './navbar';
+import Navbar from './Navbar';
 
-export const WorkExperience = () => {
+const WorkExperience = () => {
     const {state} = useLocation()
     const data = state
     const navigate = useNavigate()
@@ -72,5 +72,4 @@ export const WorkExperience = () => {
   );
 };
 
-
-
+export default WorkExperience;

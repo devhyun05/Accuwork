@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 
-export const LoginForm = () => {
+const Login = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null); 
   const [userBalance, setUserBalance] = useState(null); 
@@ -53,3 +53,5 @@ export const LoginForm = () => {
     </>
   );
 };
+
+export default Login; 
