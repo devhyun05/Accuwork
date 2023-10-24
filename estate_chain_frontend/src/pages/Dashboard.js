@@ -4,7 +4,7 @@ import { useState } from "react";
 import Navbar from "components/layouts/Navbar";
 
 function Dashboard() {
-  const [isEmployeeSelected, setIsEmployeeSelected] = useState(false);
+  const [isEmployeeSelected, setIsEmployeeSelected] = useState(true);
 
   return (
     <div>
