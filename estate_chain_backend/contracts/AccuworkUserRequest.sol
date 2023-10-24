@@ -3,12 +3,7 @@ pragma solidity ^0.8.0;
 
 contract UserRequestToCompany {
     address public accuworkCompanyWalletAddress; 
-    address public companyWalletAddress; 
-
-    struct KYCResult {
-        bool isVerified; 
-        string verificationDetails; 
-    }
+    address public userWalletAddress; 
     
     struct WorkExperience {
         string employeeName; 
@@ -19,26 +14,7 @@ contract UserRequestToCompany {
         uint256 endDate; 
     }
 
-    mapping(address => KYCResult) public kycResults; 
-    mapping(address => mapping(address => WorkExperience)) public workHistory;
-
-
-    event KYCVerified (
-        address indexed userWalletAddress, 
-        KYCResult kycResult 
-    ); 
-
-    event WorkHistoryVerified(
-        address indexed userWalletAddress,
-        address indexed companyWalletAddress, 
-        WorkExperience workExperience 
-    ); 
-    
-    // function for Receiving payment from the user 
-    event PaymentSplit(address indexed accuworkCompanyWallet, 
-                       address indexed companyWallet, 
-                       uint256 accuworkEthReceiveAmount,
-                       uint256 companyEthReceiveAmount); 
+    mapping(address => WorkExperience) public workExperience; 
 
     // When we deploy the smart contract, set accuworkCompanyWalletAddress as our metamask wallet address
     constructor() {
@@ -56,77 +32,74 @@ contract UserRequestToCompany {
         _;
     }
 
-    function submitKYCResult(bool isVerified, string memory verificationDetails) 
-    external 
-    onlyAccuworkAdmin 
-    {
-        kycResults[msg.sender] = KYCResult({
-            isVerified: isVerified,
-            verificationDetails: verificationDetails
-        }); 
-
-        emit KYCVerified(
-            msg.sender, 
-            KYCResult({
-                isVerified: isVerified,
-                verificationDetails: verificationDetails
-            })
-        );
+      // Helper function to compare two strings
+    function compareStrings(string memory a, string memory b) internal pure returns (bool) {
+        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b)); 
     }
 
-    // function addWorkExperience(
-    //     string memory employeeName, 
-    //     string memory companyName, 
-    //     string memory position,
-    //     string memory location, 
-    //     uint256 startDate,
-    //     uint256 endDate 
-    // ) external {
-    //     workExperience[msg.sender] = WorkExperience({
-    //         employeeName: employeeName, 
-    //         companyName: companyName, 
-    //         position: position,
-    //         location: location, 
-    //         startDate: startDate,
-    //         endDate: endDate 
-    //     });
+    function verifyUserInfo(
+        string memory employeeName, 
+        string memory companyName, 
+        string memory position, 
+        string memory location,
+        uint256 startDate, 
+        uint256 endDate
+    ) internal pure returns (bool) {
+        // Check if the provided information matches the mock data
+        bool isValid = 
+            compareStrings(employeeName, "John Doe") && 
+            compareStrings(companyName, "Google") && 
+            compareStrings(position, "Full Stack Developer") &&
+            compareStrings(location, "Toronto") &&
+            startDate == 123456789 &&
+            endDate == 987654321; 
 
-    //     emit WorkExperienceAdded(
-    //         msg.sender, 
-    //         WorkExperience({
-    //             employeeName: employeeName,
-    //             companyName: companyName,
-    //             position: position,
-    //             location: location,
-    //             startDate: startDate,
-    //             endDate: endDate
-    //         })
-    //     );
-    // }
+        return isValid; 
+    }
 
-    // function getWorkExperience(address userAddress)
-    //     external
-    //     view 
-    //     returns (WorkExperience memory)
-    // {
-    //     return WorkExperience[userAddress]; 
-    // }
-
-    // only accuwork admin can use this function 
-    // 1 request = 1 CAD
-    // Receive user request and make the payment for creating transaction 
-    // Accuwork and the company divide 50:50 
-    function payForVerification() external payable onlyAccuworkAdmin userHasEnoughEth(0.0043 ether) {
+    function addWorkExperienceAndVerifyAndPay (
+        string memory employeeName, 
+        string memory companyName, 
+        string memory position,
+        string memory location,
+        uint256 startDate,
+        uint256 endDate 
+    ) external payable onlyAccuworkAdmin returns (bool) {
+        // Calculate total amount that user paid 
         uint256 totalAmount = msg.value; 
 
-        // Calculate the amounts for admin and company 
-        uint256 ethAmountForAccuwork = totalAmount / 2; 
-        uint256 ethAmountForCompany = totalAmount / 2; 
+        // if the user doesn't have enough money, return false
+        if (totalAmount < 0.0002 ether) {
+            return false; 
+        } 
 
+        uint256 ethAmountForAccuwork = totalAmount; 
+
+        // send money from user wallet to accuwork wallet
         payable(accuworkCompanyWalletAddress).transfer(ethAmountForAccuwork); 
-        payable(companyWalletAddress).transfer(ethAmountForCompany); 
 
-        emit PaymentSplit(accuworkCompanyWalletAddress, companyWalletAddress, ethAmountForAccuwork, ethAmountForCompany);
+        // msg.sender is the address of user wallet
+        // add user info to blockchain
+        workExperience[msg.sender] = WorkExperience({
+            employeeName: employeeName,
+            companyName: companyName, 
+            position: position,
+            location: location,
+            startDate: startDate,
+            endDate: endDate 
+        }); 
 
+        bool isVerified = verifyUserInfo(
+            employeeName, 
+            companyName, 
+            position,
+            location,
+            startDate,
+            endDate
+        );
+
+        return isVerified;
     }
+
+
 }
