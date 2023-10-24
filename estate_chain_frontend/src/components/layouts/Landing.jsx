@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
-import { ethers } from 'ethers'; 
+import { useState, useContext } from 'react';
+import { TransactionContext } from '../../context/TransactionContext';
 import Navbar from './Navbar'
+
 
 
 const Landing = () => {
   const [isEmployeeSelected, setIsEmployeeSelected] = useState(false);
- 
+  const { value } = useContext(TransactionContext); 
+
+  console.log(value);
 
   return (
     <>
