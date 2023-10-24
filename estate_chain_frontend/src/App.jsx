@@ -8,7 +8,7 @@ import Dashboard from './components/layouts/Dashboard';
 import Landing from './components/layouts/Landing';
 import WorkExperience from './components/layouts/Workexperience';
 import Search from './components/layouts/Search';
-import Share from './components/layouts/Share'; 
+import Share from './components/layouts/Share';
 
 import {
   BrowserRouter as Router,

@@ -5,6 +5,11 @@ contract UserRequestToCompany {
     address public accuworkCompanyWalletAddress; 
     address public companyWalletAddress; 
 
+    struct KYCResult {
+        bool isVerified; 
+        string verificationDetails; 
+    }
+    
     struct WorkExperience {
         string employeeName; 
         string companyName;
@@ -14,7 +19,14 @@ contract UserRequestToCompany {
         uint256 endDate; 
     }
 
+    mapping(address => KYCResult) public kycResults; 
     mapping(address => mapping(address => WorkExperience)) public workHistory;
+
+
+    event KYCVerified (
+        address indexed userWalletAddress, 
+        KYCResult kycResult 
+    ); 
 
     event WorkHistoryVerified(
         address indexed userWalletAddress,
@@ -44,6 +56,62 @@ contract UserRequestToCompany {
         _;
     }
 
+    function submitKYCResult(bool isVerified, string memory verificationDetails) 
+    external 
+    onlyAccuworkAdmin 
+    {
+        kycResults[msg.sender] = KYCResult({
+            isVerified: isVerified,
+            verificationDetails: verificationDetails
+        }); 
+
+        emit KYCVerified(
+            msg.sender, 
+            KYCResult({
+                isVerified: isVerified,
+                verificationDetails: verificationDetails
+            })
+        );
+    }
+
+    // function addWorkExperience(
+    //     string memory employeeName, 
+    //     string memory companyName, 
+    //     string memory position,
+    //     string memory location, 
+    //     uint256 startDate,
+    //     uint256 endDate 
+    // ) external {
+    //     workExperience[msg.sender] = WorkExperience({
+    //         employeeName: employeeName, 
+    //         companyName: companyName, 
+    //         position: position,
+    //         location: location, 
+    //         startDate: startDate,
+    //         endDate: endDate 
+    //     });
+
+    //     emit WorkExperienceAdded(
+    //         msg.sender, 
+    //         WorkExperience({
+    //             employeeName: employeeName,
+    //             companyName: companyName,
+    //             position: position,
+    //             location: location,
+    //             startDate: startDate,
+    //             endDate: endDate
+    //         })
+    //     );
+    // }
+
+    // function getWorkExperience(address userAddress)
+    //     external
+    //     view 
+    //     returns (WorkExperience memory)
+    // {
+    //     return WorkExperience[userAddress]; 
+    // }
+
     // only accuwork admin can use this function 
     // 1 request = 1 CAD
     // Receive user request and make the payment for creating transaction 
@@ -55,8 +123,8 @@ contract UserRequestToCompany {
         uint256 ethAmountForAccuwork = totalAmount / 2; 
         uint256 ethAmountForCompany = totalAmount / 2; 
 
-        payable(accuworkCompanyWalletAddress).transfer(totalAmount); 
-        payable(companyWalletAddress).transfer(totalAmount); 
+        payable(accuworkCompanyWalletAddress).transfer(ethAmountForAccuwork); 
+        payable(companyWalletAddress).transfer(ethAmountForCompany); 
 
         emit PaymentSplit(accuworkCompanyWalletAddress, companyWalletAddress, ethAmountForAccuwork, ethAmountForCompany);
 

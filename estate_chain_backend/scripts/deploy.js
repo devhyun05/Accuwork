@@ -1,8 +1,9 @@
-const main = async () => {
-  const AccuworkContract = await hre.ethers.getContractFactory("AccuworkContract"); 
-  const accuworkContract = await AccuworkContract.deploy("Hello hardhat!");
 
-  await accuworkContract.deployed(); 
+const main = async () => {
+  const UserRequestToCompany = await hre.ethers.getContractFactory("UserRequestToCompany"); 
+  const userReqestContract = await UserRequestToCompany.deploy();
+
+  await userReqestContract.deployed(); 
 }
 
 const runMain = async () => {

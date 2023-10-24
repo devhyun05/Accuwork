@@ -28,12 +28,13 @@ const Login = () => {
     getUserBalance(newAccount);
   };
 
+  
+
   const getUserBalance = (address) => {
     window.ethereum
       .request({ method: 'eth_getBalance', params: [address] })
       .then((balance) => {
         setUserBalance(balance);
-        setConnButtonText('Logout');
         navigate('/', { state: address });
       })
       .catch((error) => {
@@ -42,20 +43,13 @@ const Login = () => {
       });
   };
 
-  const logoutHandler = () => {
-    setDefaultAccount(null);
-    setUserBalance(null);
-    setConnButtonText('Connect Wallet');
-    navigate('/');
-  };
-
   return (
     <>
       <a className="text-sm font-semibold leading-6 text-gray-900">
         <button
           type="button"
           className="text-white bg-blue-400 hover:bg-gray-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
-          onClick={defaultAccount ? logoutHandler : connectWalletHandler}
+          onClick={connectWalletHandler}
         >
           {connButtonText}
         </button>

@@ -63,7 +63,7 @@ const Navbar = () => {
           
         
 
-          <a href="/workexperience" className="text-sm font-semibold leading-6 text-gray-900">
+          {/* <a href="/workexperience" className="text-sm font-semibold leading-6 text-gray-900">
             Work History
           </a>
           <a href="/share" className="text-sm font-semibold leading-6 text-gray-900">
@@ -71,7 +71,7 @@ const Navbar = () => {
           </a>
           <a href="/search" className="text-sm font-semibold leading-6 text-gray-900">
             Search
-          </a>
+          </a> */}
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           
@@ -102,7 +102,7 @@ const Navbar = () => {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <a
+                {/* <a
                   href="/workexperience"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
@@ -119,7 +119,7 @@ const Navbar = () => {
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Search
-                </a>
+                </a> */}
               </div>
               <div className="py-6">
            
