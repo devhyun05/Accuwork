@@ -10,7 +10,7 @@ function Dashboard() {
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const contract = new ethers.Contract(
-        process.env.COMPANY_WALLET_ADDRESS,
+        process.env.REACT_APP_COMPANY_WALLET_ADDRESS,
         UserRequestToCompany.abi,
         provider.getSigner()
       );
@@ -26,6 +26,12 @@ function Dashboard() {
         );
         console.log(data);
         if (data) {
+          const types = ["bool"];
+          const decodedData = ethers.utils.defaultAbiCoder.decode(
+            types,
+            data.data
+          );
+          console.log(decodedData);
           alert("Your work experience has been exported");
         }
       } catch (error) {
