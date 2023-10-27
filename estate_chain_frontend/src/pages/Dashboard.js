@@ -6,15 +6,11 @@ import UserRequestToCompany from "../artifacts/contracts/AccuworkUserRequest.sol
 import Navbar from "components/layouts/Navbar";
 
 function Dashboard() {
-  // my wallet
-  //TODO: Replace this with process.en
-  const companyWalletAddress = "0xe1b73213Ac2437FCa4a7e7dDd4c4CA33ab2d1DdF";
-
   const onExport = async (values) => {
     if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const contract = new ethers.Contract(
-        companyWalletAddress,
+        process.env.COMPANY_WALLET_ADDRESS,
         UserRequestToCompany.abi,
         provider.getSigner()
       );
