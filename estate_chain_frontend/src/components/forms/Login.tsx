@@ -4,7 +4,7 @@ import { generateAvatarURL } from "@cfx-kit/wallet-avatar";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const accountNumber = localStorage.getItem("accuWork_account");
 
