@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../layouts/Navbar';
+import Navbar from './Navbar';
 
 const Share = () => {
     const [selectedCompany, setSelectedCompany] = useState(null);

@@ -1,60 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { ethers } from "ethers";
+import { jsPDF } from "jspdf"; 
 import UserRequestToCompany from "../artifacts/contracts/AccuworkUserRequest.sol/UserRequestToCompany.json";
+import AccuworkVerfied from '../images/accuworkVerfied.png'; 
 import Navbar from "components/layouts/Navbar";
 
+const PROVIDER = process.env.REACT_APP_ETH_PROVIDER;
+const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
+
 function Dashboard() {
+
   const [isModalOpen, setModalOpen] = useState(false);
+  const [workExperiences, setWorkExperiences] = useState([]);
   const openModal = () => {
     setModalOpen(true);
   };
 
+  const generatePDF = () => {
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4'
+    });
+  
+    const textX = doc.internal.pageSize.getWidth() / 2;
+    const textY = 20; 
+  
+
+    doc.setFontSize(40); 
+    doc.setFont('bold');
+  
+    doc.text("CERTIFICATE", textX, textY + 20, { align: 'center' });
+  
+    doc.setFontSize(16);
+    doc.setFont('normal');
+  
+    doc.text("Employment Verification", textX, textY + 40, { align: 'center', css: { whiteSpace: 'nowrap' } });
+  
+    const lineY = textY + 30;
+    const lineWidth = 160; 
+    doc.setLineWidth(0.5); 
+    doc.line(textX - lineWidth / 2, lineY, textX + lineWidth / 2, lineY); 
+
+
+    const additionalText = "This certificate is for:";
+    const additionalTextY = lineY + 30;
+    doc.text(additionalText, textX, additionalTextY, { align: 'center', css: { whiteSpace: 'nowrap' } });
+  
+    const juliusDejonText = "Julius Dejon";
+    doc.setFontSize(50); 
+    doc.setTextColor(103,92,255); 
+    doc.text(juliusDejonText, textX, additionalTextY + 25, { align: 'center' });
+
+    const imageSize = 50; 
+    const imageX = textX - imageSize / 2; 
+    const imageY = additionalTextY + 40; 
+    doc.addImage(AccuworkVerfied, 'PNG', imageX, imageY, imageSize, imageSize);
+  
+
+    doc.save('report.pdf');
+  };
+  
   const closeModal = () => {
     setModalOpen(false);
   };
-  const onExport = async (values) => {
+
+  // Calls all the work experiences
+  async function loadBlockchainData() {
     if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.JsonRpcProvider(PROVIDER);
       const contract = new ethers.Contract(
-        process.env.REACT_APP_COMPANY_WALLET_ADDRESS,
+        CONTRACT_ADDRESS,
         UserRequestToCompany.abi,
-        provider.getSigner()
+        provider
       );
+      console.log(contract);
       try {
- 
+        const data = await contract.getWorkExperiencesBySender();
+        console.log(`data`, data);
+        setWorkExperiences(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadBlockchainData();
+  }, []);
+
+  const onAddWorkExperience = async (values) => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.providers.JsonRpcProvider(PROVIDER);
+
+      // Get the signer
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        UserRequestToCompany.abi,
+        signer
+      );
+
+      // Specify the amount of Ether to send (in Wei) using the 'value' option
+      const valueToSend = ethers.utils.parseEther("0.0002"); // Sending 0.001 Ether, adjust as needed
+
+      try {
         const data = await contract.addWorkExperienceAndVerifyAndPay(
           values.name,
           values.companyName,
           values.position,
           values.location,
           values.startDate,
-          values.endDate
+          values.endDate,
+          {
+            value: valueToSend,
+          }
         );
-        console.log(data);
-        if (data) {
-          const types = ["bool"];
-          const decodedData = ethers.utils.defaultAbiCoder.decode(
-            types,
-            data.data
-          );
-          console.log(decodedData);
+        // Wait for the transaction to be mined
+        const result = await data.wait();
+
+        if (result) {
+          // LTODO: Check data if verified
+          // Now it always assumes that it is verified
           alert("Your work experience has been exported");
+          closeModal();
+          loadBlockchainData();
         }
-        console.log(values);
-        const boolean = await contract.alwaysFalse(); 
-        console.log("Bool: ", boolean);
       } catch (error) {
         console.log(error);
       }
     }
   };
 
+
   return (
     <div>
       <Navbar />
       <main className="h-screen pt-20 pb-20 mb-2 bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400">
+    
         <div class="w-full flex items-center justify-center">
           <div class="relative overflow-x-auto flex flex-col">
             <div class="flex mb-6 ml-auto">
@@ -70,10 +155,7 @@ function Dashboard() {
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" class="px-6 py-3">
-                    Transaction ID
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Transaction Date
+                    Employee Name
                   </th>
                   <th scope="col" class="px-6 py-3">
                     Company Name
@@ -94,7 +176,7 @@ function Dashboard() {
                     Status
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    Proof of Work
+                    Certificate{" "}
                   </th>
                 </tr>
               </thead>
@@ -195,11 +277,8 @@ function Dashboard() {
                         startDate: "",
                         endDate: "",
                       }}
-                      onSubmit={async (
-                        values,
-                        { setSubmitting, resetForm }
-                      ) => {
-                        onExport(values);
+                      onSubmit={async (values) => {
+                        onAddWorkExperience(values);
                       }}
                     >
                       {({ values, handleSubmit, handleChange }) => {
@@ -217,8 +296,8 @@ function Dashboard() {
                               <div>
                                 <>
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="employeeName"
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Your Name"
                                     required
@@ -226,8 +305,8 @@ function Dashboard() {
                                     onChange={handleChange("name")}
                                   />
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="companyName"
                                     className="bg-gray-50  border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Company Name"
                                     required
@@ -235,8 +314,8 @@ function Dashboard() {
                                     onChange={handleChange("companyName")}
                                   />
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="employeePosition"
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Position"
                                     required
@@ -244,8 +323,8 @@ function Dashboard() {
                                     onChange={handleChange("position")}
                                   />
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="workLocation"
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Location"
                                     required
@@ -269,7 +348,7 @@ function Dashboard() {
                                         </svg>
                                       </div>
                                       <input
-                                        name="start"
+                                        name="startDate"
                                         type="text"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date start"
@@ -291,7 +370,7 @@ function Dashboard() {
                                         </svg>
                                       </div>
                                       <input
-                                        name="end"
+                                        name="endDate"
                                         type="text"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date end"
