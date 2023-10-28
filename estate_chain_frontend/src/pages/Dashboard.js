@@ -126,7 +126,7 @@ function Dashboard() {
                     Status
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    Proof of Work
+                    Certificate{" "}
                   </th>
                 </tr>
               </thead>
