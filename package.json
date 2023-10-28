@@ -1,0 +1,21 @@
+{
+  "name": "estatechain",
+  "version": "1.0.0",
+  "description": "![Accuwork Logo](https://imageupload.io/ib/LnKn8HRLYCXsCVH_1698528979.png) ## Accuwork",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node estate_chain_backend/server.js && npx hardhat estate_chain_backend/node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devhyun05/EstateChain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devhyun05/EstateChain/issues"
+  },
+  "homepage": "https://github.com/devhyun05/EstateChain#readme"
+}
