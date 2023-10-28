@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { ethers } from "ethers";
 import UserRequestToCompany from "../artifacts/contracts/AccuworkUserRequest.sol/UserRequestToCompany.json";
 import Navbar from "components/layouts/Navbar";
 
+const PROVIDER = process.env.REACT_APP_ETH_PROVIDER;
+const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
+
 function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [workExperiences, setWorkExperiences] = useState([]);
   const openModal = () => {
     setModalOpen(true);
   };
@@ -14,37 +17,69 @@ function Dashboard() {
   const closeModal = () => {
     setModalOpen(false);
   };
-  const onExport = async (values) => {
+
+  // Calls all the work experiences
+  async function loadBlockchainData() {
     if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.JsonRpcProvider(PROVIDER);
       const contract = new ethers.Contract(
-        process.env.REACT_APP_COMPANY_WALLET_ADDRESS,
+        CONTRACT_ADDRESS,
         UserRequestToCompany.abi,
-        provider.getSigner()
+        provider
       );
+      console.log(contract);
       try {
- 
+        const data = await contract.getWorkExperiencesBySender();
+        console.log(`data`, data);
+        setWorkExperiences(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadBlockchainData();
+  }, []);
+
+  const onAddWorkExperience = async (values) => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.providers.JsonRpcProvider(PROVIDER);
+
+      // Get the signer
+      const signer = provider.getSigner();
+
+      const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        UserRequestToCompany.abi,
+        signer
+      );
+
+      // Specify the amount of Ether to send (in Wei) using the 'value' option
+      const valueToSend = ethers.utils.parseEther("0.0002"); // Sending 0.001 Ether, adjust as needed
+
+      try {
         const data = await contract.addWorkExperienceAndVerifyAndPay(
           values.name,
           values.companyName,
           values.position,
           values.location,
           values.startDate,
-          values.endDate
+          values.endDate,
+          {
+            value: valueToSend,
+          }
         );
-        console.log(data);
-        if (data) {
-          const types = ["bool"];
-          const decodedData = ethers.utils.defaultAbiCoder.decode(
-            types,
-            data.data
-          );
-          console.log(decodedData);
+        // Wait for the transaction to be mined
+        const result = await data.wait();
+
+        if (result) {
+          // LTODO: Check data if verified
+          // Now it always assumes that it is verified
           alert("Your work experience has been exported");
+          closeModal();
+          loadBlockchainData();
         }
-        console.log(values);
-        const boolean = await contract.alwaysFalse(); 
-        console.log("Bool: ", boolean);
       } catch (error) {
         console.log(error);
       }
@@ -70,10 +105,7 @@ function Dashboard() {
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" class="px-6 py-3">
-                    Transaction ID
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Transaction Date
+                    Employee Name
                   </th>
                   <th scope="col" class="px-6 py-3">
                     Company Name
@@ -94,71 +126,35 @@ function Dashboard() {
                     Status
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    Proof of Work
+                    Certificate{" "}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    1
-                  </th>
-                  <td class="px-6 py-4">2023-10-27</td>
-                  <td class="px-6 py-4">Example Company</td>
-                  <td class="px-6 py-4">Software Developer</td>
-                  <td class="px-6 py-4">New York</td>
-                  <td class="px-6 py-4">2023-11-01</td>
-                  <td class="px-6 py-4">2024-01-31</td>
-                  <td class="px-6 py-4">Verified</td>
-                  <td class="px-6 py-4">
-                    <button class="text-blue-500 hover:underline">
-                      View Certificate
-                    </button>
-                  </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    1
-                  </th>
-                  <td class="px-6 py-4">2023-10-27</td>
-                  <td class="px-6 py-4">Example Company</td>
-                  <td class="px-6 py-4">Software Developer</td>
-                  <td class="px-6 py-4">New York</td>
-                  <td class="px-6 py-4">2023-11-01</td>
-                  <td class="px-6 py-4">2024-01-31</td>
-                  <td class="px-6 py-4">Verified</td>
-                  <td class="px-6 py-4">
-                    <button class="text-blue-500 hover:underline">
-                      View Certificate
-                    </button>
-                  </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    1
-                  </th>
-                  <td class="px-6 py-4">2023-10-27</td>
-                  <td class="px-6 py-4">Example Company</td>
-                  <td class="px-6 py-4">Software Developer</td>
-                  <td class="px-6 py-4">New York</td>
-                  <td class="px-6 py-4">2023-11-01</td>
-                  <td class="px-6 py-4">2024-01-31</td>
-                  <td class="px-6 py-4">Verified</td>
-                  <td class="px-6 py-4">
-                    <button class="text-blue-500 hover:underline">
-                      View Certificate
-                    </button>
-                  </td>
-                </tr>
+                {workExperiences.map((workExperience) => {
+                  return (
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <td class="px-6 py-4">{workExperience.employeeName}</td>
+                      <td class="px-6 py-4">{workExperience.companyName}</td>
+                      <td class="px-6 py-4">{workExperience.position}</td>
+                      <td class="px-6 py-4">{workExperience.location}</td>
+                      <td class="px-6 py-4">
+                        {parseInt(workExperience.startDate._hex)}
+                      </td>
+                      <td class="px-6 py-4">
+                        {parseInt(workExperience.endDate._hex)}
+                      </td>
+                      <td class="px-6 py-4">
+                        {workExperience.isVerified ? "Verified" : "Pending"}
+                      </td>
+                      <td class="px-6 py-4">
+                        <button class="text-blue-500 hover:underline">
+                          View Certificate
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -195,11 +191,8 @@ function Dashboard() {
                         startDate: "",
                         endDate: "",
                       }}
-                      onSubmit={async (
-                        values,
-                        { setSubmitting, resetForm }
-                      ) => {
-                        onExport(values);
+                      onSubmit={async (values) => {
+                        onAddWorkExperience(values);
                       }}
                     >
                       {({ values, handleSubmit, handleChange }) => {
@@ -217,8 +210,8 @@ function Dashboard() {
                               <div>
                                 <>
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="employeeName"
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Your Name"
                                     required
@@ -226,8 +219,8 @@ function Dashboard() {
                                     onChange={handleChange("name")}
                                   />
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="companyName"
                                     className="bg-gray-50  border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Company Name"
                                     required
@@ -235,8 +228,8 @@ function Dashboard() {
                                     onChange={handleChange("companyName")}
                                   />
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="employeePosition"
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Position"
                                     required
@@ -244,8 +237,8 @@ function Dashboard() {
                                     onChange={handleChange("position")}
                                   />
                                   <input
-                                    type="url"
-                                    id="website"
+                                    type="text"
+                                    name="workLocation"
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Location"
                                     required
@@ -269,7 +262,7 @@ function Dashboard() {
                                         </svg>
                                       </div>
                                       <input
-                                        name="start"
+                                        name="startDate"
                                         type="text"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date start"
@@ -291,7 +284,7 @@ function Dashboard() {
                                         </svg>
                                       </div>
                                       <input
-                                        name="end"
+                                        name="endDate"
                                         type="text"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date end"
