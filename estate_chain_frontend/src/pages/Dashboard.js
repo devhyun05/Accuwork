@@ -1,16 +1,64 @@
-import React, { useState } from "react";
+import  { useState, useRef } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { ethers } from "ethers";
+import { jsPDF } from "jspdf"; 
 import UserRequestToCompany from "../artifacts/contracts/AccuworkUserRequest.sol/UserRequestToCompany.json";
+import AccuworkVerfied from '../images/accuworkVerfied.png'; 
 import Navbar from "components/layouts/Navbar";
 
 function Dashboard() {
+
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
   };
 
+  const generatePDF = () => {
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: 'a4'
+    });
+  
+    const textX = doc.internal.pageSize.getWidth() / 2;
+    const textY = 20; 
+  
+
+    doc.setFontSize(40); 
+    doc.setFont('bold');
+  
+    doc.text("CERTIFICATE", textX, textY + 20, { align: 'center' });
+  
+    doc.setFontSize(16);
+    doc.setFont('normal');
+  
+    doc.text("Employment Verification", textX, textY + 40, { align: 'center', css: { whiteSpace: 'nowrap' } });
+  
+    const lineY = textY + 30;
+    const lineWidth = 160; 
+    doc.setLineWidth(0.5); 
+    doc.line(textX - lineWidth / 2, lineY, textX + lineWidth / 2, lineY); 
+
+
+    const additionalText = "This certificate is for:";
+    const additionalTextY = lineY + 30;
+    doc.text(additionalText, textX, additionalTextY, { align: 'center', css: { whiteSpace: 'nowrap' } });
+  
+    const juliusDejonText = "Julius Dejon";
+    doc.setFontSize(50); 
+    doc.setTextColor(103,92,255); 
+    doc.text(juliusDejonText, textX, additionalTextY + 25, { align: 'center' });
+
+    const imageSize = 50; 
+    const imageX = textX - imageSize / 2; 
+    const imageY = additionalTextY + 40; 
+    doc.addImage(AccuworkVerfied, 'PNG', imageX, imageY, imageSize, imageSize);
+  
+
+    doc.save('report.pdf');
+  };
+  
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -51,10 +99,12 @@ function Dashboard() {
     }
   };
 
+
   return (
     <div>
       <Navbar />
       <main className="h-screen pt-20 pb-20 mb-2 bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400">
+    
         <div class="w-full flex items-center justify-center">
           <div class="relative overflow-x-auto flex flex-col">
             <div class="flex mb-6 ml-auto">
@@ -114,7 +164,8 @@ function Dashboard() {
                   <td class="px-6 py-4">2024-01-31</td>
                   <td class="px-6 py-4">Verified</td>
                   <td class="px-6 py-4">
-                    <button class="text-blue-500 hover:underline">
+                    <button class="text-blue-500 hover:underline"
+                            onClick={generatePDF}>
                       View Certificate
                     </button>
                   </td>
