@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { generateAvatarURL } from "@cfx-kit/wallet-avatar";
 
 const Login = () => {
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [defaultAccount, setDefaultAccount] = useState(null);
-  const [userBalance, setUserBalance] = useState(null);
-  const [connButtonText, setConnButtonText] = useState('Connect Wallet');
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const connectWalletHandler = () => {
+  const accountNumber = localStorage.getItem("accuWork_account");
+
+  useEffect(() => {
+    if (accountNumber) {
+      navigate(`/${accountNumber}`);
+    }
+  }, [accountNumber]);
+
+  const logout = () => {
+    localStorage.removeItem("accuWork_account");
+    navigate("/");
+  };
+
+  const connectWalletHandler = async () => {
     if (window.ethereum) {
       window.ethereum
-        .request({ method: 'eth_requestAccounts' })
+        .request({ method: "eth_requestAccounts" })
         .then((result) => {
-          accountChangedHandler(result[0]);
+          localStorage.setItem("accuWork_account", result[0]);
+          navigate(`${result[0]}`);
         })
         .catch((error) => {
+          console.log(error);
           setErrorMessage(`Error connecting wallet: ${error.message}`);
         });
     } else {
@@ -23,43 +36,47 @@ const Login = () => {
     }
   };
 
-  const accountChangedHandler = (newAccount) => {
-    setDefaultAccount(newAccount);
-    getUserBalance(newAccount);
-  };
+  const accountImageSrc = accountNumber
+    ? generateAvatarURL(accountNumber)
+    : null;
 
-  const getUserBalance = (address) => {
-    window.ethereum
-      .request({ method: 'eth_getBalance', params: [address] })
-      .then((balance) => {
-        setUserBalance(balance);
-        setConnButtonText('Logout');
-        navigate('/', { state: address });
-      })
-      .catch((error) => {
-        setErrorMessage(`Error fetching balance: ${error.message}`);
-        console.error("Error fetching balance:", error);
-      });
-  };
-
-  const logoutHandler = () => {
-    setDefaultAccount(null);
-    setUserBalance(null);
-    setConnButtonText('Connect Wallet');
-    navigate('/');
-  };
+  const accountNumberShorten = accountNumber
+    ? `${accountNumber.slice(0, 3)}...${accountNumber.slice(-4)}`
+    : "";
 
   return (
     <>
-      <a className="text-sm font-semibold leading-6 text-gray-900">
-        <button
-          type="button"
-          className="text-white bg-blue-400 hover:bg-gray-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
-          onClick={defaultAccount ? logoutHandler : connectWalletHandler}
-        >
-          {connButtonText}
-        </button>
-      </a>
+      <div>{accountNumberShorten}</div>
+      {accountNumber ? (
+        <div class="h-12 w-12 rounded-full overflow-hidden">
+          <img
+            src={accountImageSrc}
+            alt="User Avatar"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      ) : (
+        <a className="text-sm font-semibold leading-6 text-gray-900">
+          <button
+            type="button"
+            className="text-white bg-blue-400 hover:bg-gray-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
+            onClick={connectWalletHandler}
+          >
+            Connect Wallet
+          </button>
+        </a>
+      )}
+      {accountNumber ? (
+        <a className="text-sm font-semibold leading-6 text-gray-900">
+          <button
+            type="button"
+            className="text-white bg-blue-400 hover:bg-gray-800 focus:outline-none font-medium rounded-full text-sm px-5 py-2.5 text-center"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </a>
+      ) : null}
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </>
@@ -67,3 +84,16 @@ const Login = () => {
 };
 
 export default Login;
+
+// const getUserBalance = (address) => {
+//   window.ethereum
+//     .request({ method: "eth_getBalance", params: [address] })
+//     .then((balance) => {
+//       setUserBalance(balance);
+//       navigate("/", { state: address });
+//     })
+//     .catch((error) => {
+//       setErrorMessage(`Error fetching balance: ${error.message}`);
+//       console.error("Error fetching balance:", error);
+//     });
+// };

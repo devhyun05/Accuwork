@@ -5,7 +5,10 @@ coverage.json
 typechain
 typechain-types
 
+AccuworkUserRequest.sol
+
+
 # Hardhat files
 cache
 artifacts
-
+hardhat.config.js
