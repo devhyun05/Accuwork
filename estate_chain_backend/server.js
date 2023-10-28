@@ -5,7 +5,7 @@ const app = express();
 
 const corsOptions = {
     origin: [
-        '',
+        'https://accuwork-b5cbb33f1f1a.herokuapp.com/',
         "http://localhost:3000" // frontend 
     ],
 };
