@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { generateAvatarURL } from "@cfx-kit/wallet-avatar";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const accountNumber = localStorage.getItem("accuWork_account");
 
@@ -38,7 +38,7 @@ const Login = () => {
 
   const accountImageSrc = accountNumber
     ? generateAvatarURL(accountNumber)
-    : null;
+    : ``;
 
   const accountNumberShorten = accountNumber
     ? `${accountNumber.slice(0, 3)}...${accountNumber.slice(-4)}`
@@ -48,11 +48,11 @@ const Login = () => {
     <>
       <div>{accountNumberShorten}</div>
       {accountNumber ? (
-        <div class="h-12 w-12 rounded-full overflow-hidden">
+        <div className="h-12 w-12 rounded-full overflow-hidden">
           <img
             src={accountImageSrc}
             alt="User Avatar"
-            class="w-full h-full object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
       ) : (
@@ -84,16 +84,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// const getUserBalance = (address) => {
-//   window.ethereum
-//     .request({ method: "eth_getBalance", params: [address] })
-//     .then((balance) => {
-//       setUserBalance(balance);
-//       navigate("/", { state: address });
-//     })
-//     .catch((error) => {
-//       setErrorMessage(`Error fetching balance: ${error.message}`);
-//       console.error("Error fetching balance:", error);
-//     });
-// };

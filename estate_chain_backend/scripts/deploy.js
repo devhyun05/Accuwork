@@ -1,5 +1,5 @@
 const main = async () => {
-  const UserRequestToCompany = await hre.ethers.getContractFactory(
+  const UserRequestToCompany = await ethers.getContractFactory(
     "UserRequestToCompany"
   );
   const userReqestContract = await UserRequestToCompany.deploy();
