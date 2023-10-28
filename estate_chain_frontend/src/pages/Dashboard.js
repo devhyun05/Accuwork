@@ -15,7 +15,7 @@ function Dashboard() {
         provider.getSigner()
       );
       try {
-        console.log(values);
+ 
         const data = await contract.addWorkExperienceAndVerifyAndPay(
           values.name,
           values.companyName,
@@ -34,6 +34,9 @@ function Dashboard() {
           console.log(decodedData);
           alert("Your work experience has been exported");
         }
+        console.log(values);
+        const boolean = await contract.alwaysFalse(); 
+        console.log("Bool: ", boolean);
       } catch (error) {
         console.log(error);
       }
