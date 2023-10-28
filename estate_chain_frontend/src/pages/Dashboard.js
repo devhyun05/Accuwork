@@ -94,7 +94,7 @@ function Dashboard() {
                     Status
                   </th>
                   <th scope="col" class="px-6 py-3">
-                    Action
+                    Proof of Work
                   </th>
                 </tr>
               </thead>

@@ -24,7 +24,6 @@ const Login = () => {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then((result) => {
-          console.log(result[0]);
           localStorage.setItem("accuWork_account", result[0]);
           navigate(`${result[0]}`);
         })
@@ -45,7 +44,6 @@ const Login = () => {
     ? `${accountNumber.slice(0, 3)}...${accountNumber.slice(-4)}`
     : "";
 
-  console.log(accountNumber);
   return (
     <>
       <div>{accountNumberShorten}</div>
