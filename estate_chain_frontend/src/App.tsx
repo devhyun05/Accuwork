@@ -3,7 +3,7 @@ import Dashboard from "pages/Dashboard";
 import Welcome from "components/layouts/Welcome"; 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// temporary 
+
 function App() {
   return (
     <div>
