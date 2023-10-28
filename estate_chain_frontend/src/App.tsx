@@ -1,9 +1,5 @@
 import Dashboard from "pages/Dashboard";
-import WorkExperience from "components/layouts/Workexperience";
-import Search from "components/layouts/Search";
 import Navbar from "components/layouts/Navbar";
-import Share from "components/layouts/Share";
-import Welcome from "components/layouts/Welcome"; 
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -35,10 +31,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/:id" element={<Dashboard />} />
-          <Route path="/share" element={<Share />} />
-          <Route path="/workexperience" element={<WorkExperience />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/welcome" element={<Welcome/>}/> 
         </Routes>
       </Router>
     </div>

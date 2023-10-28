@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { ethers } from "ethers";
-import UserRequestToCompany from "../artifacts/contracts/AccuworkUserRequest.sol/UserRequestToCompany.json";
+import UserRequestToCompany from "artifacts/contracts/AccuworkUserRequest.sol/UserRequestToCompany.json";
 import Navbar from "components/layouts/Navbar";
+import { WorkExperience, WorkExperienceResponseData } from './types';
 
-const PROVIDER = process.env.REACT_APP_ETH_PROVIDER;
-const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
+const PROVIDER = `${process.env.REACT_APP_ETH_PROVIDER}`;
+const CONTRACT_ADDRESS = `${process.env.REACT_APP_CONTRACT_ADDRESS}`;
+
 
 function Dashboard() {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [workExperiences, setWorkExperiences] = useState([]);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [workExperiences, setWorkExperiences] = useState<WorkExperienceResponseData[]>([]);
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -20,7 +23,6 @@ function Dashboard() {
 
   // Calls all the work experiences
   async function loadBlockchainData() {
-    if (typeof window.ethereum !== "undefined") {
       const provider = new ethers.providers.JsonRpcProvider(PROVIDER);
       const contract = new ethers.Contract(
         CONTRACT_ADDRESS,
@@ -35,15 +37,13 @@ function Dashboard() {
       } catch (error) {
         console.log(error);
       }
-    }
   }
 
   useEffect(() => {
     loadBlockchainData();
   }, []);
 
-  const onAddWorkExperience = async (values) => {
-    if (typeof window.ethereum !== "undefined") {
+  const onAddWorkExperience = async (values: WorkExperience) => {
       const provider = new ethers.providers.JsonRpcProvider(PROVIDER);
 
       // Get the signer
@@ -60,7 +60,7 @@ function Dashboard() {
 
       try {
         const data = await contract.addWorkExperienceAndVerifyAndPay(
-          values.name,
+          values.employeeName,
           values.companyName,
           values.position,
           values.location,
@@ -83,16 +83,15 @@ function Dashboard() {
       } catch (error) {
         console.log(error);
       }
-    }
   };
 
   return (
     <div>
       <Navbar />
       <main className="h-screen pt-20 pb-20 mb-2 bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400">
-        <div class="w-full flex items-center justify-center">
-          <div class="relative overflow-x-auto flex flex-col">
-            <div class="flex mb-6 ml-auto">
+        <div className="w-full flex items-center justify-center">
+          <div className="relative overflow-x-auto flex flex-col">
+            <div className="flex mb-6 ml-auto">
               <button
                 onClick={openModal}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -101,31 +100,31 @@ function Dashboard() {
               </button>
             </div>
 
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Employee Name
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Company Name
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Position
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Location
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Start Date
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     End Date
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Status
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Certificate{" "}
                   </th>
                 </tr>
@@ -133,22 +132,22 @@ function Dashboard() {
               <tbody>
                 {workExperiences.map((workExperience) => {
                   return (
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <td class="px-6 py-4">{workExperience.employeeName}</td>
-                      <td class="px-6 py-4">{workExperience.companyName}</td>
-                      <td class="px-6 py-4">{workExperience.position}</td>
-                      <td class="px-6 py-4">{workExperience.location}</td>
-                      <td class="px-6 py-4">
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <td className="px-6 py-4">{workExperience.employeeName}</td>
+                      <td className="px-6 py-4">{workExperience.companyName}</td>
+                      <td className="px-6 py-4">{workExperience.position}</td>
+                      <td className="px-6 py-4">{workExperience.location}</td>
+                      <td className="px-6 py-4">
                         {parseInt(workExperience.startDate._hex)}
                       </td>
-                      <td class="px-6 py-4">
+                      <td className="px-6 py-4">
                         {parseInt(workExperience.endDate._hex)}
                       </td>
-                      <td class="px-6 py-4">
+                      <td className="px-6 py-4">
                         {workExperience.isVerified ? "Verified" : "Pending"}
                       </td>
-                      <td class="px-6 py-4">
-                        <button class="text-blue-500 hover:underline">
+                      <td className="px-6 py-4">
+                        <button className="text-blue-500 hover:underline">
                           View Certificate
                         </button>
                       </td>
@@ -184,20 +183,20 @@ function Dashboard() {
                     </div>
                     <Formik
                       initialValues={{
-                        name: "",
+                        employeeName: "",
                         companyName: "",
                         position: "",
                         location: "",
-                        startDate: "",
-                        endDate: "",
+                        startDate: 0,
+                        endDate: 0,
                       }}
-                      onSubmit={async (values) => {
+                      onSubmit={async (values: WorkExperience) => {
                         onAddWorkExperience(values);
                       }}
                     >
                       {({ values, handleSubmit, handleChange }) => {
                         const {
-                          name,
+                          employeeName,
                           companyName,
                           position,
                           location,
@@ -215,8 +214,8 @@ function Dashboard() {
                                     className="bg-gray-50 border mt-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Your Name"
                                     required
-                                    value={name}
-                                    onChange={handleChange("name")}
+                                    value={employeeName}
+                                    onChange={handleChange("employeeName")}
                                   />
                                   <input
                                     type="text"
@@ -247,12 +246,12 @@ function Dashboard() {
                                   />
                                   <div
                                     date-rangepicker
-                                    class="flex items-center mt-3"
+                                    className="flex items-center mt-3"
                                   >
-                                    <div class="relative">
-                                      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <div className="relative">
+                                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <svg
-                                          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                          className="w-4 h-4 text-gray-500 dark:text-gray-400"
                                           aria-hidden="true"
                                           xmlns="http://www.w3.org/2000/svg"
                                           fill="currentColor"
@@ -264,17 +263,17 @@ function Dashboard() {
                                       <input
                                         name="startDate"
                                         type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date start"
                                         value={startDate}
                                         onChange={handleChange("startDate")}
                                       />
                                     </div>
-                                    <span class="mx-4 text-gray-500">to</span>
-                                    <div class="relative">
-                                      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <span className="mx-4 text-gray-500">to</span>
+                                    <div className="relative">
+                                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <svg
-                                          class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                          className="w-4 h-4 text-gray-500 dark:text-gray-400"
                                           aria-hidden="true"
                                           xmlns="http://www.w3.org/2000/svg"
                                           fill="currentColor"
@@ -286,7 +285,7 @@ function Dashboard() {
                                       <input
                                         name="endDate"
                                         type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Select date end"
                                         value={endDate}
                                         onChange={handleChange("endDate")}
@@ -296,11 +295,11 @@ function Dashboard() {
                                 </>
                               </div>
                               <div>
-                                <div class="mt-5 text-right">
+                                <div className="mt-5 text-right">
                                   <button
                                     type="submit"
-                                    onClick={handleSubmit}
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    onClick={() => handleSubmit()}
+                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                   >
                                     Create Request
                                   </button>
