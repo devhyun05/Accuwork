@@ -1,10 +1,18 @@
+
+
 import { Link } from 'react-router-dom'; 
 import Navbar from './Navbar'; 
+// @ts-ignore
 import blockchainBg from '../../images/blockchain-bg.jpg';
+// @ts-ignore
 import questionMark from '../../images/question-mark.png';
+// @ts-ignore
 import metaMask from '../../images/metamask.png'; 
+// @ts-ignore
 import formImage from '../../images/form.png'; 
+// @ts-ignore
 import blockchainIcon from '../../images/blockchain-icon.png'; 
+// @ts-ignore
 import transactionImage from '../../images/transaction.png'; 
 const Welcome = () => {
     return (
@@ -15,8 +23,8 @@ const Welcome = () => {
                     <p style={{fontSize: '36px', fontWeight: 'bold', color: '#675cff', marginBottom: '2%'}}>Verify employment <br/>history for career </p>
                     <div style={{fontSize: '20px'}}>Accuwork is currently testing features <br/> do not use features for public usage yet
                         <br/>
-                        <Link to="/">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-lg" style={{width: '230px', fontSize: '20px', marginTop: '4%'}}>
+                        <Link to="/landing">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-lg" style={{width: '230px', fontSize: '20px', marginTop: '4%'}}>
                                 Get started
                             </button>
                         </Link>
@@ -101,7 +109,7 @@ const Welcome = () => {
                     </p>
                 </div>
                 <div>
-                    <iframe width="576" height="324" src="https://www.youtube.com/embed/k0OmnkE6f4E?si=44K83UaE2l77yFce" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe width="576" height="324" src="https://www.youtube.com/embed/k0OmnkE6f4E?si=44K83UaE2l77yFce" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                 </div>
             </div>
         </>

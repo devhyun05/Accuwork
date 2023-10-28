@@ -1,35 +1,16 @@
 import Dashboard from "pages/Dashboard";
-import Navbar from "components/layouts/Navbar";
 
+import Welcome from "components/layouts/Welcome"; 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function Landing() {
-  return (
-    <div>
-      <Navbar />
-      <div
-        style={{
-          height: "100vh",
-          width: "100vw",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#2c3e50",
-          flexDirection: "column",
-          color: "white",
-        }}
-      >
-        Landing Page coming soon...
-      </div>
-    </div>
-  );
-}
+
 function App() {
   return (
     <div>
       <Router>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Welcome />} />
+
           <Route path="/:id" element={<Dashboard />} />
         </Routes>
       </Router>

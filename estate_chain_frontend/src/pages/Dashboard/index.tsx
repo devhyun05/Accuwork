@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-=======
 import { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { ethers } from "ethers";
 import UserRequestToCompany from "artifacts/contracts/AccuworkUserRequest.sol/UserRequestToCompany.json";
-import { jsPDF } from "jspdf"; 
-//@ts-ignore
-import AccuworkVerfied from 'images/accuworkVerfied.png'; 
 import Navbar from "components/layouts/Navbar";
 import { WorkExperience, WorkExperienceResponseData } from './types';
 
@@ -22,53 +17,6 @@ function Dashboard() {
     setModalOpen(true);
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF({
-      orientation: 'landscape',
-      unit: 'mm',
-      format: 'a4'
-    });
-  
-    const textX = doc.internal.pageSize.getWidth() / 2;
-    const textY = 20; 
-  
-
-    doc.setFontSize(40); 
-    doc.setFont('bold');
-  
-    doc.text("CERTIFICATE", textX, textY + 20, { align: 'center' });
-  
-    doc.setFontSize(16);
-    doc.setFont('normal');
-  
-    // @ts-ignore
-    doc.text("Employment Verification", textX, textY + 40, { align: 'center', css: { whiteSpace: 'nowrap' } });
-  
-    const lineY = textY + 30;
-    const lineWidth = 160; 
-    doc.setLineWidth(0.5); 
-    doc.line(textX - lineWidth / 2, lineY, textX + lineWidth / 2, lineY); 
-
-
-    const additionalText = "This certificate is for:";
-    const additionalTextY = lineY + 30;
-    // @ts-ignore
-    doc.text(additionalText, textX, additionalTextY, { align: 'center', css: { whiteSpace: 'nowrap' } });
-  
-    const juliusDejonText = "Julius Dejon";
-    doc.setFontSize(50); 
-    doc.setTextColor(103,92,255); 
-    doc.text(juliusDejonText, textX, additionalTextY + 25, { align: 'center' });
-
-    const imageSize = 50; 
-    const imageX = textX - imageSize / 2; 
-    const imageY = additionalTextY + 40; 
-    doc.addImage(AccuworkVerfied, 'PNG', imageX, imageY, imageSize, imageSize);
-  
-
-    doc.save('report.pdf');
-  };
-  
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -137,7 +85,6 @@ function Dashboard() {
       }
   };
 
-
   return (
     <div>
       <Navbar />
@@ -200,7 +147,7 @@ function Dashboard() {
                         {workExperience.isVerified ? "Verified" : "Pending"}
                       </td>
                       <td className="px-6 py-4">
-                        <button onClick={generatePDF} className="text-blue-500 hover:underline">
+                        <button className="text-blue-500 hover:underline">
                           View Certificate
                         </button>
                       </td>
@@ -375,4 +322,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
->>>>>>> 812d23882a0d684c01a6cf35b816a0d1706ba1b2
