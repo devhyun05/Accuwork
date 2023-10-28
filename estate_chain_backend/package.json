@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy:dev": "npx hardhat run scripts/deploy.js --network localhost"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +24,7 @@
     "@types/mocha": "^10.0.3",
     "chai": "^4.3.10",
     "ethereum-waffle": "^4.0.10",
-    "ethers": "^6.8.0",
+    "ethers": "5.7.2",
     "hardhat": "^2.18.3",
     "hardhat-gas-reporter": "^1.0.9",
     "solidity-coverage": "^0.8.5",
