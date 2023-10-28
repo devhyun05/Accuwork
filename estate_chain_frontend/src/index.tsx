@@ -4,14 +4,22 @@ import './index.css';
 import App from './App';
 import { TransactionProvider } from './context/TransactionContext'; 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <TransactionProvider>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </TransactionProvider>
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <TransactionProvider>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </TransactionProvider>
+  );
+} else {
+  console.error("Element with id 'root' not found.");
+}
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
