@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 ![Accuwork Logo](https://imageupload.io/ib/LnKn8HRLYCXsCVH_1698528979.png)
 ## Accuwork 
@@ -62,3 +63,7 @@ Start the frontend
  - [BlockHack](https://blockhack.ca/)
 
 
+=======
+# EstateChain
+Real Estate website with blockchain
+>>>>>>> 46868ae (Update README.md)
