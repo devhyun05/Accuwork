@@ -63,7 +63,7 @@ Start the frontend
  - [BlockHack](https://blockhack.ca/)
 
 
-=======
+
 # EstateChain
 Real Estate website with blockchain
->>>>>>> 46868ae (Update README.md)
+
